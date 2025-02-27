@@ -1,20 +1,27 @@
 package OAuthTests;
 
 import api.actions.OAuthApi;
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pojo.GetCourses;
+import pojo.WebAutomation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OAuthTest {
 
     @Test
-    public void shouldGetCourseDetailsUsingOAuth() {
+    public void shouldGetCoursesDetailsUsingOAuth() {
+        List<String> expectedCourseTitles = List.of("Selenium Webdriver Java", "Cypress", "Protractor");
         OAuthApi oAuthApi = new OAuthApi();
 
-        Response response = oAuthApi.getCourseDetails();
-        JsonPath jsonPath = new JsonPath(response.asString());
-
-        //Assert.assertEquals(jsonPath.getInt("courses.size()"), 3);
+        GetCourses getCourses = oAuthApi.getCoursesDetails();
+        List<String> actualCourseTitles = new ArrayList<>();;
+        for (WebAutomation webAutomationCourse : getCourses.getCourses().getWebAutomation()) {
+            actualCourseTitles.add(webAutomationCourse.getCourseTitle());
+        }
+        Assert.assertEquals(actualCourseTitles, expectedCourseTitles);
     }
 }

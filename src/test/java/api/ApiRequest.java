@@ -20,6 +20,7 @@ public class ApiRequest extends SpecBuilder {
 
     public static Response get(String endpoint, String accessToken) {
         return given(getRequestSpec())
+                .queryParam("access_token", accessToken)
                 .when()
                 .get(endpoint)
                 .then()
